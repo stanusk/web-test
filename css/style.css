@@ -1,0 +1,101 @@
+/* --- BASE RULES --- */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  font-size: 100%;
+  text-align: center;
+
+  width: 1260px;
+  margin: auto;
+  padding: 1em 0;
+}
+
+h1 {
+  font-size: 8.5em;
+  font-family: 'Lobster', cursive;
+  color: #ED143D;
+
+  margin-bottom: .3em;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* --- LAYOUT RULES --- */
+
+.l-clearfix:before,
+.l-clearfix:after {
+  content:"";
+  display:table;
+}
+.l-clearfix:after {
+  clear:both;
+}
+.l-clearfix {
+  zoom:1;
+}
+
+.l-left {
+  float: left;
+}
+
+
+/* --- FORMAT RULES --- */
+
+
+
+
+/* --- MODULE RULES --- */
+
+.gallery-set img {
+  float: left;
+}
+
+
+ul {
+  width: 100%;
+  margin: .75em 0 1em;
+}
+
+li,
+li a {
+  display: inline-block;
+}
+
+li a {
+  background: #228FBA;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+
+  color: #fff;
+  font-size: 1.5em;
+  text-decoration: none;
+  line-height: 1.5em;
+}
+
+.dir-btn {
+  display: none;
+}
+
+#prev-page a {
+  text-indent: -.1em;
+}
+#next-page a {
+  text-indent: .1em;
+}
+
+
+li a:hover,
+li.selected a {
+  background: #0674A0;
+}
