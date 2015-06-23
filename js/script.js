@@ -1,67 +1,45 @@
 // hide all links
-$(".menu li").hide();
+$(".menu").hide();
 
-var gallery = $("#gallery"),
-    links = $(".menu").find("a"),
+var win = $(window),
+    gallery = $("#gallery"),
     gallerySets = ["gallery-index", "gallery-gallery2", "gallery-gallery3"],
-    nextBtn = $("#next-page"),
-    prevBtn = $("#prev-page"),
+    lastLoadedGallery = 0,
     loading = $("<img/>", {src: "img/heart.svg", id: "loading"}).hide();
 
-gallery.prepend(loading);
-nextBtn.show();
 
-links.click(function(evt){
-    evt.preventDefault();
 
-    var visibleSet = $(".gallery-set").filter(":visible").attr("id"),
-        galleryPosition = gallerySets.indexOf(visibleSet),
-        prevGalleryID = gallerySets[galleryPosition - 1],
-        nextGalleryID = gallerySets[galleryPosition + 1],
-        btnID = $(this).parent().attr("id"),
-        url = null;
+win.scroll(function(evt){
 
-    $(".gallery-set").filter(":visible").hide();
-    loading.show();
-    $(".dir-btn").show();
+    if ($("#" + gallerySets[gallerySets.length - 1]).length < 1) {
 
-    if (btnID === "next-page") {
-        var nextGallery = $("#" + nextGalleryID);
+        var scrollTop = $(this).scrollTop(),
+            innerHeight = $(this).innerHeight(),
+            scrollHeight = document.body.scrollHeight;
 
-        if (galleryPosition === 1) nextBtn.hide();
+        if (scrollTop > (scrollHeight - innerHeight - 293)){
+            var url = gallerySets[lastLoadedGallery+1].split("-")[1] + ".html";
 
-        if (nextGallery.length) {
-            loading.hide();
-            nextGallery.fadeIn();
-            return;
+            gallery.append(loading);
+            loading.show();
+
+            $.ajax({
+                url: url,
+            })
+            .done(function(data) {
+                var targetGallery = $(data).find(".gallery-set");
+
+                gallery.append(targetGallery.hide());
+                targetGallery.fadeIn();
+
+                lastLoadedGallery += 1;
+            })
+            .fail(function() {
+                console.log("error");
+            })
+            .always(function() {
+                loading.hide();
+            });
         }
-        url = nextGalleryID.split("-")[1] + ".html";
     }
-    else if (btnID === "prev-page") {
-        var prevGallery = $("#" + prevGalleryID);
-
-        if (galleryPosition === 1) prevBtn.hide();
-
-        loading.hide();
-        prevGallery.fadeIn();
-        return;
-    }
-
-
-    $.ajax({
-        url: url,
-    })
-    .done(function(data) {
-        var targetGallery = $(data).find(".gallery-set");
-
-        gallery.prepend(targetGallery.hide());
-        targetGallery.fadeIn();
-
-    })
-    .fail(function() {
-        alert("WTF did just happen?");
-    })
-    .always(function() {
-        loading.hide();
-    });
 });
